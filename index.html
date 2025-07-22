@@ -760,5 +760,42 @@
         </div>
     </div>
 
+    <!-- *************************** -->
+    
     <!-- Club Modal -->
-    <div id="club
+<div id="clubModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('clubModal')">&times;</span>
+    <h2>افزودن/ویرایش باشگاه</h2>
+    <form id="clubForm" onsubmit="saveClub(event)">
+      <input type="hidden" id="clubId">
+
+      <div class="form-group">
+        <label>نام باشگاه:</label>
+        <input type="text" id="clubName" required>
+      </div>
+
+      <div class="form-group">
+        <label>نام مدیر باشگاه:</label>
+        <input type="text" id="clubManager" required>
+      </div>
+
+      <div class="form-group">
+        <label>شماره تماس:</label>
+        <input type="tel" id="clubPhone">
+      </div>
+
+      <div class="form-group">
+        <label>آدرس:</label>
+        <textarea id="clubAddress" rows="3"></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary">💾 ذخیره</button>
+    </form>
+  </div>
+</div>
+</body>
+</html>
+    
+
+    

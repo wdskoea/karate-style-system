@@ -1,0 +1,275 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f5f5f5;
+    direction: rtl;
+}
+
+/* Header Styles */
+header {
+    background-color: #2c3e50;
+    color: white;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.logo-container {
+    width: 80px;
+    height: 80px;
+}
+
+.logo-container img {
+    width: 100%;
+    height: auto;
+}
+
+.header-title {
+    text-align: center;
+    flex-grow: 1;
+}
+
+.header-title h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+#datetime {
+    font-size: 1rem;
+    color: #ecf0f1;
+}
+
+/* Main Content Styles */
+main {
+    padding: 2rem;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #2c3e50;
+    margin: 1.5rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+/* Form Styles */
+.form-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+    flex: 1;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.required:after {
+    content: " *";
+    color: #e74c3c;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="email"],
+input[type="password"],
+input.persian-date,
+select,
+textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+input[type="file"] {
+    padding: 0.5rem;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.radio-group,
+.checkbox-group {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.radio-group label,
+.checkbox-group label {
+    font-weight: normal;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Roles Section */
+.roles-section {
+    margin: 1.5rem 0;
+}
+
+.role-item {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border: 1px solid #eee;
+    border-radius: 4px;
+}
+
+.role-item > label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.role-details {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+}
+
+/* Buttons */
+button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button i {
+    margin-left: 0.5rem;
+}
+
+#searchBtn,
+#submitBtn,
+#confirmBtn {
+    background-color: #27ae60;
+    color: white;
+}
+
+#searchBtn:hover,
+#submitBtn:hover,
+#confirmBtn:hover {
+    background-color: #2ecc71;
+}
+
+#cancelBtn,
+#editBtn,
+#newMemberBtn {
+    background-color: #e74c3c;
+    color: white;
+}
+
+#cancelBtn:hover,
+#editBtn:hover,
+#newMemberBtn:hover {
+    background-color: #c0392b;
+}
+
+#editMemberBtn {
+    background-color: #3498db;
+    color: white;
+}
+
+#editMemberBtn:hover {
+    background-color: #2980b9;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 2rem;
+}
+
+/* Search Section */
+.search-section {
+    margin-bottom: 2rem;
+}
+
+.search-box {
+    display: flex;
+    gap: 1rem;
+}
+
+.search-box input {
+    flex: 1;
+}
+
+/* Member Info Display */
+#memberInfoPreview,
+#memberInfoDisplay {
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+
+.info-row {
+    display: flex;
+    margin-bottom: 0.5rem;
+}
+
+.info-label {
+    font-weight: 600;
+    min-width: 150px;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #2c3e50;
+    color: white;
+    margin-top: 2rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .logo-container {
+        margin-bottom: 1rem;
+    }
+}

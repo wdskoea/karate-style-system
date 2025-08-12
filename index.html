@@ -3,799 +3,315 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سیستم مدیریت سبک داینامیک شوتوکان کاراته آذربایجان‌شرقی </title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Tahoma', sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #333;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .header {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-
-        .header h1 {
-            color: #2c3e50;
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            color: #7f8c8d;
-            font-size: 16px;
-        }
-
-        .dashboard {
-            display: grid;
-            grid-template-columns: 250px 1fr;
-            gap: 30px;
-        }
-
-        .sidebar {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            height: fit-content;
-        }
-
-        .sidebar h3 {
-            color: #2c3e50;
-            margin-bottom: 20px;
-            font-size: 18px;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 10px;
-        }
-
-        .menu-item {
-            padding: 12px 15px;
-            margin: 5px 0;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
-        }
-
-        .menu-item:hover {
-            background: #3498db;
-            color: white;
-            transform: translateX(-5px);
-        }
-
-        .menu-item.active {
-            background: #2980b9;
-            color: white;
-        }
-
-        .main-content {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-
-        .section {
-            display: none;
-        }
-
-        .section.active {
-            display: block;
-        }
-
-        .section h2 {
-            color: #2c3e50;
-            margin-bottom: 20px;
-            font-size: 24px;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 10px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: #34495e;
-        }
-
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #bdc3c7;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: border-color 0.3s ease;
-        }
-
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-            outline: none;
-            border-color: #3498db;
-            box-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .form-row-3 {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 15px;
-        }
-
-        .btn {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            margin: 5px;
-        }
-
-        .btn-primary {
-            background: #3498db;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #2980b9;
-            transform: translateY(-2px);
-        }
-
-        .btn-success {
-            background: #27ae60;
-            color: white;
-        }
-
-        .btn-success:hover {
-            background: #229954;
-        }
-
-        .btn-warning {
-            background: #f39c12;
-            color: white;
-        }
-
-        .btn-warning:hover {
-            background: #e67e22;
-        }
-
-        .btn-danger {
-            background: #e74c3c;
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background: #c0392b;
-        }
-
-        .excel-import {
-            border: 3px dashed #3498db;
-            padding: 30px;
-            text-align: center;
-            border-radius: 10px;
-            margin: 20px 0;
-            background: #ecf0f1;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .excel-import:hover {
-            background: #d5dbdb;
-            border-color: #2980b9;
-        }
-
-        .excel-import.dragover {
-            background: #d5e8f7;
-            border-color: #2980b9;
-            transform: scale(1.02);
-        }
-
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .table th {
-            background: #34495e;
-            color: white;
-            padding: 15px;
-            text-align: right;
-            font-weight: bold;
-        }
-
-        .table td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #ecf0f1;
-            text-align: right;
-        }
-
-        .table tr:hover {
-            background: #f8f9fa;
-        }
-
-        .search-box {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #bdc3c7;
-            border-radius: 10px;
-            font-size: 16px;
-            margin-bottom: 20px;
-            background: white;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin: 20px 0;
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        .stat-card h3 {
-            font-size: 32px;
-            margin-bottom: 10px;
-        }
-
-        .stat-card p {
-            font-size: 14px;
-            opacity: 0.9;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-        }
-
-        .modal-content {
-            background-color: white;
-            margin: 5% auto;
-            padding: 30px;
-            border-radius: 15px;
-            width: 80%;
-            max-width: 600px;
-            position: relative;
-        }
-
-        .close {
-            position: absolute;
-            right: 15px;
-            top: 15px;
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .close:hover {
-            color: black;
-        }
-
-        .alert {
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 8px;
-            font-weight: bold;
-        }
-
-        .alert-success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .alert-error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        @media (max-width: 768px) {
-            .dashboard {
-                grid-template-columns: 1fr;
-            }
-            
-            .form-row, .form-row-3 {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <title>ثبت نام اعضای سبک داینامیک شوتوکان کاراته آذربایجان شرقی</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <img src="logo shotokan.gif" alt="لوگوی سبک کاراته" style="width:100px; height:auto; margin-bottom:10px;">
-            <h1>  سیستم مدیریت سبک داینامیک شوتوکان کاراته آذربایجان‌شرقی</h1>
-            <p>مدیریت جامع ورزشکاران، مربیان و باشگاه‌های سبک</p>
+    <header>
+        <div class="logo-container">
+            <img src="assets/logo.png" alt="لوگو سبک داینامیک شوتوکان">
         </div>
+        <div class="header-title">
+            <h1>ثبت اطلاعات اعضای سبک داینامیک شوتوکان کاراته آذربایجان شرقی</h1>
+            <div id="datetime"></div>
+        </div>
+    </header>
 
-        <div class="dashboard">
-            <div class="sidebar">
-                <h3>منوی اصلی</h3>
-                <div class="menu-item active" onclick="showSection('dashboard')">
-                    📊 داشبورد
-                </div>
-                <div class="menu-item" onclick="showSection('athletes')">
-                    🏃‍♂️ مدیریت ورزشکاران
-                </div>
-                <div class="menu-item" onclick="showSection('coaches')">
-                    👨‍🏫  مدیریت مربیان و داوران
-                </div>
-                <div class="menu-item" onclick="showSection('clubs')">
-                    🏢 مدیریت باشگاه‌ها
-                </div>
-                <div class="menu-item" onclick="showSection('competitions')">
-                    🏆 سیستم مسابقات
-                </div>
-                <div class="menu-item" onclick="showSection('reports')">
-                    📈 گزارش‌گیری
-                </div>
-                <div class="menu-item" onclick="showSection('import')">
-                    📥 وارد کردن Excel
-                </div>
-                <div class="menu-item" onclick="showSection('backup')">
-                    💾 پشتیبان‌گیری
+    <main>
+        <div class="container">
+            <div class="search-section">
+                <h2>جستجوی عضو</h2>
+                <div class="search-box">
+                    <input type="text" id="searchNationalId" placeholder="کد ملی را وارد کنید">
+                    <button id="searchBtn"><i class="fas fa-search"></i> جستجو</button>
                 </div>
             </div>
 
-            <div class="main-content">
-                <!-- Dashboard Section -->
-                <div id="dashboard" class="section active">
-                    <h2>📊 داشبورد اصلی</h2>
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <h3 id="totalAthletes">0</h3>
-                            <p>کل ورزشکاران</p>
-                        </div>
-                        <div class="stat-card">
-                            <h3 id="totalCoaches">0</h3>
-                            <p>کل مربیان</p>
-                        </div>
-                        <div class="stat-card">
-                            <h3 id="totalClubs">0</h3>
-                            <p>کل باشگاه‌ها</p>
-                        </div>
-                        <div class="stat-card">
-                            <h3 id="totalMedals">0</h3>
-                            <p>کل داورها</p>
-                        </div>
-                    </div>
-
-                    <h3>آخرین فعالیت‌ها</h3>
-                    <div id="recentActivity"></div>
-                </div>
-
-                <!-- Athletes Section -->
-                <div id="athletes" class="section">
-                    <h2>🏃‍♂️ مدیریت ورزشکاران</h2>
-                    
-                    <button class="btn btn-primary" onclick="openModal('athleteModal')">
-                        ➕ افزودن ورزشکار جدید
-                    </button>
-                    <button class="btn btn-success" onclick="exportToExcel('athletes')">
-                        📤 خروجی Excel
-                    </button>
-                    
-                    <input type="text" class="search-box" id="athleteSearch" placeholder="جستجوی ورزشکار (نام، باشگاه، کمربند)..." onkeyup="searchAthletes()">
-                    
-                    <div id="athletesTable"></div>
-                </div>
-
-                <!-- Coaches Section -->
-                <div id="coaches" class="section">
-                    <h2>👨‍🏫 مدیریت مربیان</h2>
-                    
-                    <button class="btn btn-primary" onclick="openModal('coachModal')">
-                        ➕ افزودن مربی جدید
-                    </button>
-                    <button class="btn btn-success" onclick="exportToExcel('coaches')">
-                        📤 خروجی Excel
-                    </button>
-                    
-                    <input type="text" class="search-box" id="coachSearch" placeholder="جستجوی مربی..." onkeyup="searchCoaches()">
-                    
-                    <div id="coachesTable"></div>
-                </div>
-
-                <!-- Clubs Section -->
-                <div id="clubs" class="section">
-                    <h2>🏢 مدیریت باشگاه‌ها</h2>
-                    
-                    <button class="btn btn-primary" onclick="openModal('clubModal')">
-                        ➕ افزودن باشگاه جدید
-                    </button>
-                    <button class="btn btn-success" onclick="exportToExcel('clubs')">
-                        📤 خروجی Excel
-                    </button>
-                    
-                    <div id="clubsTable"></div>
-                </div>
-
-                <!-- Competitions Section -->
-                <div id="competitions" class="section">
-                    <h2>🏆 اعزام به مسابقات</h2>
-                    
+            <form id="memberForm" style="display: none;">
+                <h2>اطلاعات شخصی</h2>
+                <div class="form-row">
                     <div class="form-group">
-                        <label>فیلتر بر اساس:</label>
-                        <div class="form-row-3">
-                            <select id="competitionAgeFilter" onchange="filterCompetitionAthletes()">
-                                <option value="">همه سن‌ها</option>
-                                <option value="زیر 10 سال">زیر 10 سال</option>
-                                <option value="10-12 سال">10-12 سال</option>
-                                <option value="13-15 سال">13-15 سال</option>
-                                <option value="16-18 سال">16-18 سال</option>
-                                <option value="بزرگسال">بزرگسال</option>
-                            </select>
-                            <select id="competitionBeltFilter" onchange="filterCompetitionAthletes()">
-                                <option value="">همه کمربندها</option>
-                                <option value="سفید">سفید</option>
-                                <option value="زرد">زرد</option>
-                                <option value="نارنجی">نارنجی</option>
-                                <option value="سبز">سبز</option>
-                                <option value="آبی">آبی</option>
-                                <option value="قهوه‌ای">قهوه‌ای</option>
-                                <option value="سیاه">سیاه</option>
-                            </select>
-                            <select id="competitionWeightFilter" onchange="filterCompetitionAthletes()">
-                                <option value="">همه وزن‌ها</option>
-                                <option value="زیر 35">زیر 35 کیلو</option>
-                                <option value="35-45">35-45 کیلو</option>
-                                <option value="45-55">45-55 کیلو</option>
-                                <option value="55-65">55-65 کیلو</option>
-                                <option value="65-75">65-75 کیلو</option>
-                                <option value="بالای 75">بالای 75 کیلو</option>
-                            </select>
-                        </div>
+                        <label for="firstName" class="required">نام</label>
+                        <input type="text" id="firstName" name="firstName" required>
                     </div>
-                    
-                    <button class="btn btn-success" onclick="generateCompetitionList()">
-                        📋 تولید لیست مسابقه
-                    </button>
-                    
-                    <div id="competitionList"></div>
+                    <div class="form-group">
+                        <label for="lastName" class="required">نام خانوادگی</label>
+                        <input type="text" id="lastName" name="lastName" required>
+                    </div>
                 </div>
 
-                <!-- Reports Section -->
-                <div id="reports" class="section">
-                    <h2>📈 گزارش‌گیری</h2>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>نوع گزارش:</label>
-                            <select id="reportType" onchange="generateReport()">
-                                <option value="">انتخاب کنید</option>
-                                <option value="age">آمار بر اساس سن</option>
-                                <option value="belt">آمار بر اساس کمربند</option>
-                                <option value="club">آمار بر اساس باشگاه</option>
-                                <option value="medals">آمار مدال‌ها</option>
-                                <option value="coaches">آمار مربیان</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>فرمت خروجی:</label>
-                            <select id="reportFormat">
-                                <option value="table">جدول</option>
-                                <option value="excel">Excel</option>
-                                <option value="print">چاپ</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div id="reportResult"></div>
+                <div class="form-group">
+                    <label for="photo">عکس 3*4</label>
+                    <input type="file" id="photo" name="photo" accept="image/*">
                 </div>
 
-                <!-- Import Section -->
-                <div id="import" class="section">
-                    <h2>📥 وارد کردن از Excel</h2>
-                    
-                    <div class="excel-import" id="excelImport">
-                        <h3>📎 فایل Excel را اینجا بکشید و رها کنید</h3>
-                        <p>یا روی این ناحیه کلیک کنید تا فایل انتخاب کنید</p>
-                        <p style="font-size: 12px; margin-top: 10px; color: #7f8c8d;">
-                            فرمت‌های پشتیبانی شده: .xlsx, .xls, .csv
-                        </p>
-                        <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" style="display: none;">
-                    </div>
-                    
-                    <div id="importPreview"></div>
-                    <div id="importResult"></div>
+                <div class="form-group">
+                    <label for="fatherName" class="required">نام پدر</label>
+                    <input type="text" id="fatherName" name="fatherName" required>
                 </div>
 
-                <!-- Backup Section -->
-                <div id="backup" class="section">
-                    <h2>💾 پشتیبان‌گیری و بازیابی</h2>
-                    
-                    <div class="form-row">
-                        <div>
-                            <h3>پشتیبان‌گیری</h3>
-                            <button class="btn btn-primary" onclick="backupData()">
-                                💾 دانلود پشتیبان کامل
-                            </button>
-                            <p style="margin-top: 10px; font-size: 14px; color: #7f8c8d;">
-                                تمام اطلاعات سیستم در یک فایل JSON ذخیره می‌شود
-                            </p>
-                        </div>
-                        <div>
-                            <h3>بازیابی</h3>
-                            <input type="file" id="restoreFile" accept=".json" style="margin-bottom: 10px;">
-                            <br>
-                            <button class="btn btn-warning" onclick="restoreData()">
-                                🔄 بازیابی از پشتیبان
-                            </button>
-                            <p style="margin-top: 10px; font-size: 14px; color: #e74c3c;">
-                                ⚠️ تمام اطلاعات فعلی حذف و جایگزین می‌شود
-                            </p>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nationalId" class="required">کد ملی</label>
+                        <input type="text" id="nationalId" name="nationalId" required pattern="\d{10}">
+                    </div>
+                    <div class="form-group">
+                        <label for="birthDate" class="required">تاریخ تولد</label>
+                        <input type="text" id="birthDate" name="birthDate" class="persian-date" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="gender" class="required">جنسیت</label>
+                        <select id="gender" name="gender" required>
+                            <option value="">انتخاب کنید</option>
+                            <option value="male">مرد</option>
+                            <option value="female">زن</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="belt" class="required">کمربند</label>
+                        <select id="belt" name="belt" required>
+                            <option value="">انتخاب کنید</option>
+                            <option value="white">سفید</option>
+                            <option value="yellow">زرد</option>
+                            <option value="orange">نارنجی</option>
+                            <option value="green">سبز</option>
+                            <option value="blue">آبی</option>
+                            <option value="brown">قهوه‌ای</option>
+                            <option value="black">مشکی</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="danSection" style="display: none;">
+                    <div class="form-group">
+                        <label for="dan">دان</label>
+                        <select id="dan" name="dan">
+                            <option value="">انتخاب کنید</option>
+                            <option value="1">دان 1</option>
+                            <option value="2">دان 2</option>
+                            <option value="3">دان 3</option>
+                            <option value="4">دان 4</option>
+                            <option value="5">دان 5</option>
+                            <option value="6">دان 6</option>
+                            <option value="7">دان 7</option>
+                            <option value="8">دان 8</option>
+                            <option value="9">دان 9</option>
+                            <option value="10">دان 10</option>
+                        </select>
+                    </div>
+                </div>
+
+                <h2>اطلاعات تماس</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="mobile" class="required">تلفن همراه</label>
+                        <input type="tel" id="mobile" name="mobile" required pattern="09\d{9}">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">تلفن ثابت</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="emergencyMobile">تلفن همراه ضروری</label>
+                    <input type="tel" id="emergencyMobile" name="emergencyMobile">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">ایمیل</label>
+                    <input type="email" id="email" name="email">
+                </div>
+
+                <div class="form-group">
+                    <label for="address">آدرس منزل</label>
+                    <textarea id="address" name="address" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="medicalInfo">مورد پزشکی (اختیاری)</label>
+                    <textarea id="medicalInfo" name="medicalInfo" rows="3"></textarea>
+                </div>
+
+                <h2>نقش‌های سازمانی</h2>
+                <div class="roles-section">
+                    <div class="role-item">
+                        <input type="checkbox" id="boardMember" name="roles" value="boardMember">
+                        <label for="boardMember">عضو هیات رئیسه</label>
+                        <div class="role-details" style="display: none;">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>حوزه:</label>
+                                    <div class="radio-group">
+                                        <input type="radio" id="provinceScope" name="boardScope" value="province">
+                                        <label for="provinceScope">استان</label>
+                                        <input type="radio" id="cityScope" name="boardScope" value="city">
+                                        <label for="cityScope">شهر</label>
+                                    </div>
+                                </div>
+                                <div class="form-group" id="citySelectGroup" style="display: none;">
+                                    <label for="city">شهر</label>
+                                    <select id="city" name="city">
+                                        <option value="">انتخاب کنید</option>
+                                        <option value="tabriz">تبریز</option>
+                                        <option value="maragheh">مراغه</option>
+                                        <option value="marand">مرند</option>
+                                        <!-- سایر شهرهای آذربایجان شرقی -->
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="boardPosition">سمت:</label>
+                                <select id="boardPosition" name="boardPosition">
+                                    <option value="">انتخاب کنید</option>
+                                    <option value="president">رئیس سبک</option>
+                                    <option value="viceWomen">نایب رئیس امور بانوان</option>
+                                    <option value="viceMen">نایب رئیس آقایان</option>
+                                    <option value="secretary">دبیر</option>
+                                    <option value="technicalCommittee">کمیته فنی</option>
+                                    <option value="cityRepresentative">نماینده شهرستان</option>
+                                    <option value="talentCommittee">کمیته استعداد یابی</option>
+                                    <option value="disciplineCommittee">کمیته انضباطی</option>
+                                    <option value="legalCommittee">کمیته حقوقی</option>
+                                    <option value="refereesCouncil">شورای داوران</option>
+                                    <option value="publicRelations">روابط عمومی</option>
+                                    <option value="menCompetitionCommittee">کمیته برگزاری مسابقات آقایان</option>
+                                    <option value="womenCompetitionCommittee">کمیته برگزاری مسابقات خانم ها</option>
+                                    <option value="advisor">مشاور</option>
+                                </select>
+                            </div>
+                            <div id="technicalCommitteeDetails" style="display: none;">
+                                <div class="form-group">
+                                    <label for="technicalPosition">موقعیت در کمیته فنی:</label>
+                                    <select id="technicalPosition" name="technicalPosition">
+                                        <option value="">انتخاب کنید</option>
+                                        <option value="head">رئیس</option>
+                                        <option value="member">عضو</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
+                    <div class="role-item">
+                        <input type="checkbox" id="coach" name="roles" value="coach">
+                        <label for="coach">مربی</label>
+                        <div class="role-details" style="display: none;">
+                            <div class="form-group">
+                                <label for="coachLevel">سطح مربیگری:</label>
+                                <select id="coachLevel" name="coachLevel">
+                                    <option value="">انتخاب کنید</option>
+                                    <option value="national3">درجه 3 ملی</option>
+                                    <option value="national2">درجه 2 ملی</option>
+                                    <option value="national1">درجه 1 ملی</option>
+                                    <option value="excellent">ممتاز</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="role-item">
+                        <input type="checkbox" id="referee" name="roles" value="referee">
+                        <label for="referee">داور</label>
+                        <div class="role-details" style="display: none;">
+                            <div class="form-group">
+                                <label>حوزه داوری:</label>
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="kataReferee" name="refereeTypes" value="kata">
+                                    <label for="kataReferee">کاتا</label>
+                                    <input type="checkbox" id="kumiteReferee" name="refereeTypes" value="kumite">
+                                    <label for="kumiteReferee">کومیته</label>
+                                </div>
+                            </div>
+
+                            <div id="kumiteRefereeDetails" style="display: none;">
+                                <div class="form-group">
+                                    <label for="kumiteDegree">درجه داوری کومیته:</label>
+                                    <select id="kumiteDegree" name="kumiteDegree">
+                                        <option value="">انتخاب کنید</option>
+                                        <option value="JC">JC</option>
+                                        <option value="JB">JB</option>
+                                        <option value="JA">JA</option>
+                                        <option value="RC">RC</option>
+                                        <option value="RB">RB</option>
+                                        <option value="RA">RA</option>
+                                        <option value="excellent">ممتاز</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="kumiteLevel">سطح داوری کومیته:</label>
+                                    <select id="kumiteLevel" name="kumiteLevel">
+                                        <option value="">انتخاب کنید</option>
+                                        <option value="style">سبک</option>
+                                        <option value="national">ملی</option>
+                                        <option value="asian">آسیایی</option>
+                                        <option value="westAsian">غرب آسیا</option>
+                                        <option value="world">جهانی</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div id="kataRefereeDetails" style="display: none;">
+                                <div class="form-group">
+                                    <label for="kataDegree">درجه داوری کاتا:</label>
+                                    <select id="kataDegree" name="kataDegree">
+                                        <option value="">انتخاب کنید</option>
+                                        <option value="JC">JC</option>
+                                        <option value="JB">JB</option>
+                                        <option value="JA">JA</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="kataLevel">سطح داوری کاتا:</label>
+                                    <select id="kataLevel" name="kataLevel">
+                                        <option value="">انتخاب کنید</option>
+                                        <option value="style">سبک</option>
+                                        <option value="national">ملی</option>
+                                        <option value="asian">آسیایی</option>
+                                        <option value="westAsian">غرب آسیا</option>
+                                        <option value="world">جهانی</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" id="submitBtn">ثبت اطلاعات</button>
+                    <button type="button" id="cancelBtn">انصراف</button>
+                </div>
+            </form>
+
+            <div id="confirmationSection" style="display: none;">
+                <h2>تایید نهایی اطلاعات</h2>
+                <div id="memberInfoPreview"></div>
+                <div class="form-actions">
+                    <button type="button" id="confirmBtn">تایید و ثبت نهایی</button>
+                    <button type="button" id="editBtn">ویرایش اطلاعات</button>
+                </div>
+            </div>
+
+            <div id="searchResult" style="display: none;">
+                <h2>اطلاعات عضو</h2>
+                <div id="memberInfoDisplay"></div>
+                <div class="form-actions">
+                    <button type="button" id="editMemberBtn">ویرایش اطلاعات</button>
+                    <button type="button" id="newMemberBtn">ثبت عضو جدید</button>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
-    <!-- Modals -->
-    <!-- Athlete Modal -->
-    <div id="athleteModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('athleteModal')">&times;</span>
-            <h2>افزودن/ویرایش ورزشکار</h2>
-            <form id="athleteForm" onsubmit="saveAthlete(event)">
-                <input type="hidden" id="athleteId">
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>نام:</label>
-                        <input type="text" id="athleteName" required>
-                    </div>
-                    <div class="form-group">
-                        <label>نام خانوادگی:</label>
-                        <input type="text" id="athleteLastName" required>
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>کد ملی:</label>
-                        <input type="text" id="athleteNationalId" required>
-                    </div>
-                    <div class="form-group">
-                        <label>تاریخ تولد:</label>
-                        <input type="date" id="athleteBirthDate" required>
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>جنسیت:</label>
-                        <select id="athleteGender" required>
-                            <option value="">انتخاب کنید</option>
-                            <option value="مرد">مرد</option>
-                            <option value="زن">زن</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>وزن (کیلوگرم):</label>
-                        <input type="number" id="athleteWeight" step="0.1" required>
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>کمربند:</label>
-                        <select id="athleteBelt" required>
-                            <option value="">انتخاب کنید</option>
-                            <option value="سفید">سفید</option>
-                            <option value="زرد">زرد</option>
-                            <option value="نارنجی">نارنجی</option>
-                            <option value="سبز">سبز</option>
-                            <option value="آبی">آبی</option>
-                            <option value="قهوه‌ای">قهوه‌ای</option>
-                            <option value="سیاه">سیاه</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>درجه:</label>
-                        <select id="athleteGrade" required>
-                            <option value="">انتخاب کنید</option>
-                            <option value="کیو 10">کیو 10</option>
-                            <option value="کیو 9">کیو 9</option>
-                            <option value="کیو 8">کیو 8</option>
-                            <option value="کیو 7">کیو 7</option>
-                            <option value="کیو 6">کیو 6</option>
-                            <option value="کیو 5">کیو 5</option>
-                            <option value="کیو 4">کیو 4</option>
-                            <option value="کیو 3">کیو 3</option>
-                            <option value="کیو 2">کیو 2</option>
-                            <option value="کیو 1">کیو 1</option>
-                            <option value="دان 1">دان 1</option>
-                            <option value="دان 2">دان 2</option>
-                            <option value="دان 3">دان 3</option>
-                            <option value="دان 4">دان 4</option>
-                            <option value="دان 5">دان 5</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>باشگاه:</label>
-                        <select id="athleteClub" required>
-                            <option value="">انتخاب کنید</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>شماره بیمه:</label>
-                        <input type="text" id="athleteInsurance">
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>مدال‌ها (جدا شده با کاما):</label>
-                    <textarea id="athleteMedals" rows="3" placeholder="مثال: طلا - مسابقات استانی 2024, نقره - مسابقات کشوری 2023"></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label>امتیاز (از 100):</label>
-                    <input type="number" id="athleteScore" min="0" max="100" value="0">
-                </div>
-                
-                <div class="form-group">
-                    <label>توضیحات:</label>
-                    <textarea id="athleteNotes" rows="3"></textarea>
-                </div>
-                
-                <button type="submit" class="btn btn-primary">💾 ذخیره</button>
-            </form>
-        </div>
-    </div>
+    <footer>
+        <p>سبک داینامیک شوتوکان کاراته آذربایجان شرقی - © <span id="currentYear"></span></p>
+    </footer>
 
-    <!-- Coach Modal -->
-    <div id="coachModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('coachModal')">&times;</span>
-            <h2>افزودن/ویرایش مربی</h2>
-            <form id="coachForm" onsubmit="saveCoach(event)">
-                <input type="hidden" id="coachId">
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>نام:</label>
-                        <input type="text" id="coachName" required>
-                    </div>
-                    <div class="form-group">
-                        <label>نام خانوادگی:</label>
-                        <input type="text" id="coachLastName" required>
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>کد ملی:</label>
-                        <input type="text" id="coachNationalId" required>
-                    </div>
-                    <div class="form-group">
-                        <label>تلفن:</label>
-                        <input type="tel" id="coachPhone">
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>درجه مربیگری:</label>
-                        <select id="coachLevel" required>
-                            <option value="">انتخاب کنید</option>
-                            <option value="مربی درجه 3">مربی درجه 3</option>
-                            <option value="مربی درجه 2">مربی درجه 2</option>
-                            <option value="مربی درجه 1">مربی درجه 1</option>
-                            <option value="مربی عالی">مربی عالی</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>درجه داوری:</label>
-                        <select id="coachJudgeLevel">
-                            <option value="">ندارد</option>
-                            <option value="داور درجه 3">داور درجه 3</option>
-                            <option value="داور درجه 2">داور درجه 2</option>
-                            <option value="داور درجه 1">داور درجه 1</option>
-                            <option value="داور بین‌المللی">داور بین‌المللی</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>باشگاه:</label>
-                    <select id="coachClub" required>
-                        <option value="">انتخاب کنید</option>
-                    </select>
-                </div>
-                
-                <button type="submit" class="btn btn-primary">💾 ذخیره</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- *************************** -->
-    
-    <!-- Club Modal -->
-<div id="clubModal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('clubModal')">&times;</span>
-    <h2>افزودن/ویرایش باشگاه</h2>
-    <form id="clubForm" onsubmit="saveClub(event)">
-      <input type="hidden" id="clubId">
-
-      <div class="form-group">
-        <label>نام باشگاه:</label>
-        <input type="text" id="clubName" required>
-      </div>
-
-      <div class="form-group">
-        <label>نام مدیر باشگاه:</label>
-        <input type="text" id="clubManager" required>
-      </div>
-
-      <div class="form-group">
-        <label>شماره تماس:</label>
-        <input type="tel" id="clubPhone">
-      </div>
-
-      <div class="form-group">
-        <label>آدرس:</label>
-        <textarea id="clubAddress" rows="3"></textarea>
-      </div>
-
-      <button type="submit" class="btn btn-primary">💾 ذخیره</button>
-    </form>
-  </div>
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/persian-date@1.1.0/dist/persian-date.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
-    
-
-    

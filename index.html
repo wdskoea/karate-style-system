@@ -1,90 +1,141 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>داینامیک شوتوکان کاراته آذربایجان شرقی</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        
-        .container {
-            background-color: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 40px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            max-width: 600px;
-            width: 100%;
-        }
-        
-        .logo-container {
-            margin-bottom: 30px;
-        }
-        
-        .logo {
-            max-width: 200px;
-            max-height: 200px;
-            margin: 0 auto 20px;
-            display: block;
-        }
-        
-        .text-container {
-            margin-top: 30px;
-        }
-        
-        .persian-text {
-            font-size: 24px;
-            color: #1a2a6c;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
-        
-        .english-text {
-            font-size: 18px;
-            color: #b21f1f;
-            font-weight: 500;
-        }
-        
-        @media (max-width: 768px) {
-            .container {
-                padding: 30px 20px;
-            }
-            
-            .persian-text {
-                font-size: 20px;
-            }
-            
-            .english-text {
-                font-size: 16px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>مدیریت مسابقات</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body { font-family: sans-serif; margin: 20px; }
+    .hidden { display: none; }
+    input, button { padding: 8px; margin: 5px; }
+    .match { background: #f5f5f5; padding: 10px; margin: 10px 0; border-radius: 4px; }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="logo-container">
-            <!-- آدرس لوگوی خود را در این قسمت قرار دهید -->
-            <img src="logo.png" alt="لوگو" class="logo">
-        </div>
-        
-        <div class="text-container">
-            <div class="persian-text">داینامیک شوتوکان کاراته آذربایجان شرقی</div>
-            <div class="english-text">Dynamic Shotokan Karate East Azerbaijan</div>
-        </div>
-    </div>
+
+<!-- فرم ورود -->
+<div id="loginSection">
+  <h2>ورود</h2>
+  <input type="email" id="email" placeholder="ایمیل" />
+  <input type="password" id="password" placeholder="رمز عبور" />
+  <br>
+  <button onclick="login()">ورود</button>
+  <button onclick="register()">ثبت‌نام</button>
+  <p id="authMessage" style="color: red;"></p>
+</div>
+
+<!-- داشبورد اصلی -->
+<div id="dashboard" class="hidden">
+  <h1>مدیریت مسابقات</h1>
+  <button onclick="logout()">خروج</button>
+  <hr>
+
+  <h3>افزودن مسابقه</h3>
+  <input type="text" id="team1" placeholder="تیم ۱" />
+  <input type="text" id="team2" placeholder="تیم ۲" />
+  <input type="date" id="matchDate" />
+  <button onclick="addMatch()">ثبت مسابقه</button>
+
+  <div id="matchesList">
+    <h3>لیست مسابقات</h3>
+    <div id="matches"></div>
+  </div>
+</div>
+
+<script>
+  // 🔑 تنظیمات Supabase (این رو از داشبورد پروژه‌ات کپی کن)
+  const supabaseUrl = 'YOUR_SUPABASE_URL';
+  const supabaseAnonKey = 'YOUR_SUPABASE_ANON_KEY';
+  const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+  // جایگزین کن!
+  // مثال:
+  // const supabaseUrl = 'https://abc.supabase.co';
+  // const supabaseAnonKey = 'eyJhb...';
+
+  // چک کن که کاربر لاگین کرده یا نه
+  async function checkSession() {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session) {
+      document.getElementById('loginSection').classList.add('hidden');
+      document.getElementById('dashboard').classList.remove('hidden');
+      loadMatches();
+    }
+  }
+
+  async function login() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+    if (error) {
+      document.getElementById('authMessage').textContent = error.message;
+    } else {
+      checkSession();
+    }
+  }
+
+  async function register() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password
+    });
+    if (error) {
+      document.getElementById('authMessage').textContent = error.message;
+    } else {
+      alert('ثبت‌نام موفق! ایمیل تأیید را چک کنید.');
+    }
+  }
+
+  async function logout() {
+    await supabase.auth.signOut();
+    document.getElementById('dashboard').classList.add('hidden');
+    document.getElementById('loginSection').classList.remove('hidden');
+  }
+
+  async function addMatch() {
+    const team1 = document.getElementById('team1').value;
+    const team2 = document.getElementById('team2').value;
+    const date = document.getElementById('matchDate').value;
+    if (!team1 || !team2 || !date) return alert('همه فیلدها را پر کنید!');
+
+    const { data, error } = await supabase
+      .from('matches')
+      .insert([{ team1, team2, date }]);
+
+    if (!error) {
+      loadMatches();
+      document.getElementById('team1').value = '';
+      document.getElementById('team2').value = '';
+      document.getElementById('matchDate').value = '';
+    }
+  }
+
+  async function loadMatches() {
+    const { data, error } = await supabase
+      .from('matches')
+      .select('*')
+      .order('date', { ascending: false });
+
+    const container = document.getElementById('matches');
+    container.innerHTML = '';
+    if (data) {
+      data.forEach(m => {
+        const div = document.createElement('div');
+        div.className = 'match';
+        div.innerHTML = `<strong>${m.team1} vs ${m.team2}</strong> - ${m.date}`;
+        container.appendChild(div);
+      });
+    }
+  }
+
+  // هنگام بارگذاری صفحه
+  checkSession();
+</script>
 </body>
 </html>

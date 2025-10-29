@@ -43,11 +43,17 @@
 
 <script>
 // 🔑 مرحله ۱: تنظیمات Supabase (حتماً این دو خط رو عوض کن!)
-const supabaseUrl = 'https://tylfrxwtrikfoenymrxa.supabase.co'; // مثال: 'https://xyz.supabase.co'
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR5bGZyeHd0cmlrZm9lbnltcnhhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE2MjkwODAsImV4cCI6MjA3NzIwNTA4MH0.iiJys46-YaXZOZp_9gf4vGf-Gseq5XMWzyQQeiQiXPA'; // کلید بلند anon
 
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = 'https://tylfrxwtrikfoenymrxa.supabase.co'; // مثال: 'https://xyz.supabase.co'
+//const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR5bGZyeHd0cmlrZm9lbnltcnhhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE2MjkwODAsImV4cCI6MjA3NzIwNTA4MH0.iiJys46-YaXZOZp_9gf4vGf-Gseq5XMWzyQQeiQiXPA'; // کلید بلند anon
+const supabaseKey = process.env.SUPABASE_KEY
+  
 // 🔌 مرحله ۲: ساخت کلاینت Supabase
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+//const supabase = createClient(supabaseUrl, supabaseAnonKey);
+const supabase = createClient(supabaseUrl, supabaseKey)
+  
 
 // 🧠 مرحله ۳: تعریف ماژول‌های کاربر و مسابقات
 const auth = {

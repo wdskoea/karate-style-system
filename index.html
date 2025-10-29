@@ -14,28 +14,26 @@
 </head>
 <body>
 
-<!-- فرم ورود -->
 <div id="loginSection">
   <h2>ورود</h2>
   <input type="email" id="email" placeholder="ایمیل" />
   <input type="password" id="password" placeholder="رمز عبور" />
   <br>
-  <button onclick="login()">ورود</button>
-  <button onclick="register()">ثبت‌نام</button>
+  <button onclick="auth.login()">ورود</button>
+  <button onclick="auth.register()">ثبت‌نام</button>
   <p id="authMessage" style="color: red;"></p>
 </div>
 
-<!-- داشبورد اصلی -->
 <div id="dashboard" class="hidden">
   <h1>مدیریت مسابقات</h1>
-  <button onclick="logout()">خروج</button>
+  <button onclick="auth.logout()">خروج</button>
   <hr>
 
   <h3>افزودن مسابقه</h3>
   <input type="text" id="team1" placeholder="تیم ۱" />
   <input type="text" id="team2" placeholder="تیم ۲" />
   <input type="date" id="matchDate" />
-  <button onclick="addMatch()">ثبت مسابقه</button>
+  <button onclick="matches.add()">ثبت مسابقه</button>
 
   <div id="matchesList">
     <h3>لیست مسابقات</h3>
@@ -44,98 +42,90 @@
 </div>
 
 <script>
-  // 🔑 تنظیمات Supabase (این رو از داشبورد پروژه‌ات کپی کن)
-  const supabaseUrl = 'https://tylfrxwtrikfoenymrxa.supabase.co';
-  const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR5bGZyeHd0cmlrZm9lbnltcnhhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE2MjkwODAsImV4cCI6MjA3NzIwNTA4MH0.iiJys46-YaXZOZp_9gf4vGf-Gseq5XMWzyQQeiQiXPA';
-  const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// 🔑 مرحله ۱: تنظیمات Supabase (حتماً این دو خط رو عوض کن!)
+const supabaseUrl = 'YOUR_SUPABASE_URL'; // مثال: 'https://xyz.supabase.co'
+const supabaseAnonKey = 'YOUR_SUPABASE_ANON_KEY'; // کلید بلند anon
 
-  // جایگزین کن!
-  // مثال:
-  // const supabaseUrl = 'https://abc.supabase.co';
-  // const supabaseAnonKey = 'eyJhb...';
+// 🔌 مرحله ۲: ساخت کلاینت Supabase
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-  // چک کن که کاربر لاگین کرده یا نه
-  async function checkSession() {
+// 🧠 مرحله ۳: تعریف ماژول‌های کاربر و مسابقات
+const auth = {
+  async login() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    this.showMessage(error?.message || 'ورود موفق!');
+    if (!error) this.checkSession();
+  },
+
+  async register() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const { error } = await supabase.auth.signUp({ email, password });
+    this.showMessage(error?.message || 'ثبت‌نام موفق! (اگر ایمیل تأیید غیرفعال باشه، می‌تونی وارد بشی)');
+    if (!error) setTimeout(() => this.checkSession(), 1000);
+  },
+
+  async logout() {
+    await supabase.auth.signOut();
+    document.getElementById('dashboard').classList.add('hidden');
+    document.getElementById('loginSection').classList.remove('hidden');
+  },
+
+  async checkSession() {
     const { data: { session } } = await supabase.auth.getSession();
     if (session) {
       document.getElementById('loginSection').classList.add('hidden');
       document.getElementById('dashboard').classList.remove('hidden');
-      loadMatches();
+      matches.load();
     }
-  }
+  },
 
-  async function login() {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password
-    });
-    if (error) {
-      document.getElementById('authMessage').textContent = error.message;
-    } else {
-      checkSession();
-    }
+  showMessage(msg) {
+    document.getElementById('authMessage').textContent = msg;
   }
+};
 
-  async function register() {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password
-    });
-    if (error) {
-      document.getElementById('authMessage').textContent = error.message;
-    } else {
-      alert('ثبت‌نام موفق! ایمیل تأیید را چک کنید.');
-    }
-  }
-
-  async function logout() {
-    await supabase.auth.signOut();
-    document.getElementById('dashboard').classList.add('hidden');
-    document.getElementById('loginSection').classList.remove('hidden');
-  }
-
-  async function addMatch() {
+const matches = {
+  async add() {
     const team1 = document.getElementById('team1').value;
     const team2 = document.getElementById('team2').value;
     const date = document.getElementById('matchDate').value;
     if (!team1 || !team2 || !date) return alert('همه فیلدها را پر کنید!');
 
-    const { data, error } = await supabase
-      .from('matches')
-      .insert([{ team1, team2, date }]);
-
-    if (!error) {
-      loadMatches();
+    const { error } = await supabase.from('matches').insert([{ team1, team2, date }]);
+    if (error) {
+      alert('خطا در ذخیره: ' + error.message);
+    } else {
+      this.load();
       document.getElementById('team1').value = '';
       document.getElementById('team2').value = '';
       document.getElementById('matchDate').value = '';
     }
-  }
+  },
 
-  async function loadMatches() {
-    const { data, error } = await supabase
-      .from('matches')
-      .select('*')
-      .order('date', { ascending: false });
-
+  async load() {
+    const { data, error } = await supabase.from('matches').select('*').order('date', { ascending: false });
     const container = document.getElementById('matches');
     container.innerHTML = '';
-    if (data) {
-      data.forEach(m => {
-        const div = document.createElement('div');
-        div.className = 'match';
-        div.innerHTML = `<strong>${m.team1} vs ${m.team2}</strong> - ${m.date}`;
-        container.appendChild(div);
-      });
+    if (error) {
+      container.innerHTML = '<p style="color:red;">خطا در بارگذاری داده‌ها</p>';
+      return;
     }
+    data.forEach(m => {
+      const div = document.createElement('div');
+      div.className = 'match';
+      div.innerHTML = `<strong>${m.team1} vs ${m.team2}</strong> - ${m.date}`;
+      container.appendChild(div);
+    });
   }
+};
 
-  // هنگام بارگذاری صفحه
-  checkSession();
+// 🚀 مرحله ۴: هنگام بارگذاری صفحه، چک کن که کاربر لاگین کرده یا نه
+document.addEventListener('DOMContentLoaded', () => {
+  auth.checkSession();
+});
 </script>
 </body>
 </html>
